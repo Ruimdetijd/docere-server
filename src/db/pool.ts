@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from 'fs'
+// import { readFileSync, existsSync } from 'fs'
 
 import * as pg from "pg"
 pg.types.setTypeParser(20, function (value) {
@@ -16,16 +16,16 @@ pg.types.setTypeParser(1184, function (value) {
 	// return new Date(value).getTime()
 });
 
-function getSecret(name: string): string {
-	const path = `/run/secrets/${name}`
-	if (existsSync(path)) {
-		return readFileSync(path, 'utf8').trim()
-	}
-}
+// function getSecret(name: string): string {
+// 	const path = `/run/secrets/${name}`
+// 	if (existsSync(path)) {
+// 		return readFileSync(path, 'utf8').trim()
+// 	}
+// }
 
 export default () => new pg.Pool({
-	database: getSecret('civslog_db_name') || 'docere',
+	database: 'docere',
 	host: process.env.PGHOST,
-	password: getSecret('civslog_db_password') || 'postgis',
-	user: getSecret('civslog_db_user') || 'postgres'
+	password: process.env.PGPASS || 'postgis',
+	user: 'postgres'
 })
