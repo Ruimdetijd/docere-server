@@ -1,22 +1,18 @@
-import { execSql, selectByProp } from './utils'
+import { execSql } from './utils'
+// TODO replace any with MetadataField
 
-export default async function updateMetadata(projectId: string, metadataKeys: string[]): Promise<void> {
-	const rows = await selectByProp('metadata', 'project_id', projectId)
-	for (const [index, key] of metadataKeys.sort().entries()) {
-		// If the metadata is already in the DB skip the insert into
-		const found = rows.find(row => row.slug === key)
-		if (found) continue;
+async function updateMetadata(metadataId: string, props: any): Promise<any> {
+	const sql = `UPDATE metadata
+				SET title = $1, es_data_type = $2, aside = $3, updated = NOW()
+				WHERE id = $4
+				RETURNING *`
 
-		const sql = `INSERT INTO metadata
-						(project_id, slug, title, sortorder, created)
-					VALUES
-						($1, $2, $3, $4, NOW())`
-		await execSql(sql, [projectId, key, key, index + 1])
-	}
+	const result = await execSql(
+		sql,
+		[props.title, props.es_data_type, props.aside, metadataId]
+	)
 
-	// Remove the metadata from the DB that is not present in the metadata keys
-	for (const row of rows.filter(r => metadataKeys.indexOf(r.slug) === -1)) {
-		const sql = `DELETE FROM metadata WHERE id = $1`	
-		await execSql(sql, [row.id])
-	}
+	return result.rows[0]
 }
+
+export default updateMetadata

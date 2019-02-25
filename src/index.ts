@@ -2,6 +2,8 @@ import * as fs from 'fs'
 import * as express from 'express'
 import insertProject from './db/insert-project'
 import updateProject from './db/update-project'
+import updateMetadata from './db/update-metadata'
+import updateMetadataSortorder from './db/update-metadata-sortorder'
 import insertUser from './db/insert-user'
 import { execSql, selectOne, selectByProp } from './db/utils'
 import { Project } from './models'
@@ -25,13 +27,24 @@ app.post('/projects', async (req, res) => {
 
 app.get('/projects/:slug', async (req, res) => {
 	const project = await selectOne('project', 'slug', req.params.slug)
-	project.metadata_fields = await selectByProp('metadata', 'project_id', project.id, ['slug', 'title', 'sortorder'])
+	project.metadata_fields = await selectByProp('metadata', 'project_id', project.id, ['id', 'slug', 'title', 'sortorder', 'aside', 'es_data_type', 'type'])
 	res.json(project)
 })
 
 app.put('/projects/:slug', async (req, res) => {
 	const project = await updateProject(req.params.slug, req.body)
 	res.json(project)
+})
+
+app.put('/metadata/sortorder', async (req, res) => {
+	await updateMetadataSortorder(req.body)
+	res.end()
+})
+
+app.put('/metadata/:id', async (req, res) => {
+	const metadata = await updateMetadata(req.params.id, req.body)
+	const nextProject = await selectOne('project', 'id', metadata.project_id)
+	res.json(nextProject)
 })
 
 app.post('/users', async (req, res) => {

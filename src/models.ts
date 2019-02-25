@@ -1,3 +1,18 @@
+// TODO fix. Extractor is copied from docere
+interface ExtractedItem {
+	count: number
+	node: any
+	id: string
+}
+export interface Extractor {
+	color: string
+	id: string
+	items?: ExtractedItem[]
+	idAttribute?: string
+	selector: string
+	title: string
+}
+
 export class Project {
 	description: string
 	files: string[]
@@ -7,6 +22,7 @@ export class Project {
 	userIds: string[]
 	metadata_extractor: string
 	facsimile_extractor: string
+	extractors: Extractor[]
 	xmlIds: string[]
 }
 

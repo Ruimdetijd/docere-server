@@ -4,6 +4,8 @@ const fs = require("fs");
 const express = require("express");
 const insert_project_1 = require("./db/insert-project");
 const update_project_1 = require("./db/update-project");
+const update_metadata_1 = require("./db/update-metadata");
+const update_metadata_sortorder_1 = require("./db/update-metadata-sortorder");
 const insert_user_1 = require("./db/insert-user");
 const utils_1 = require("./db/utils");
 const app = express();
@@ -22,12 +24,21 @@ app.post('/projects', async (req, res) => {
 });
 app.get('/projects/:slug', async (req, res) => {
     const project = await utils_1.selectOne('project', 'slug', req.params.slug);
-    project.metadata_fields = await utils_1.selectByProp('metadata', 'project_id', project.id, ['slug', 'title', 'sortorder']);
+    project.metadata_fields = await utils_1.selectByProp('metadata', 'project_id', project.id, ['id', 'slug', 'title', 'sortorder', 'aside', 'es_data_type', 'type']);
     res.json(project);
 });
 app.put('/projects/:slug', async (req, res) => {
     const project = await update_project_1.default(req.params.slug, req.body);
     res.json(project);
+});
+app.put('/metadata/sortorder', async (req, res) => {
+    await update_metadata_sortorder_1.default(req.body);
+    res.end();
+});
+app.put('/metadata/:id', async (req, res) => {
+    const metadata = await update_metadata_1.default(req.params.id, req.body);
+    const nextProject = await utils_1.selectOne('project', 'id', metadata.project_id);
+    res.json(nextProject);
 });
 app.post('/users', async (req, res) => {
     const user = await insert_user_1.default(req.body);

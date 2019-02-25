@@ -5,6 +5,7 @@
     "module": "commonjs",
     "importHelpers": true,
     "noUnusedLocals": true,
+    "noImplicitAny": true,
     "outDir": "build",
     "removeComments": true,
     "target": "es2017"

@@ -13,12 +13,12 @@ async function deleteIndex(slug) {
     }
 }
 exports.deleteIndex = deleteIndex;
-async function createIndex(slug, metadataKeys) {
-    const properties = metadataKeys.reduce((prev, curr) => {
-        const type = curr === 'text' ? 'text' : 'keyword';
-        prev[curr] = { type };
+async function createIndex(slug, metadata) {
+    const properties = metadata.reduce((prev, curr) => {
+        prev[curr.slug] = { type: curr.es_data_type === 'null' ? 'keyword' : curr.es_data_type };
         return prev;
     }, {});
+    properties.text = { type: 'text' };
     try {
         await client.indices.create({
             index: slug,
@@ -36,13 +36,14 @@ async function createIndex(slug, metadataKeys) {
     }
 }
 exports.createIndex = createIndex;
-async function indexDocument(data) {
+async function indexDocument(slug, docData) {
+    const [metadata, textData, text] = docData;
     try {
         await client.index({
-            id: data.id,
-            index: 'gekaaptebrieven',
+            id: metadata.id,
+            index: slug,
             type: 'doc',
-            body: data
+            body: Object.assign({}, metadata, textData, { text })
         });
     }
     catch (err) {
