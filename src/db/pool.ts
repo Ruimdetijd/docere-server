@@ -22,10 +22,11 @@ pg.types.setTypeParser(1184, function (value) {
 // 		return readFileSync(path, 'utf8').trim()
 // 	}
 // }
+console.log('PGPASS', process.env.PGPASS)
 
 export default () => new pg.Pool({
 	database: 'docere',
-	host: process.env.PGHOST,
+	host: process.env.PGHOST || 'localhost',
 	password: process.env.PGPASS || 'postgis',
 	user: 'postgres'
 })

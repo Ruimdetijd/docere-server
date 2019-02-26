@@ -5,6 +5,10 @@ CREATE DATABASE docere;
 
 CREATE EXTENSION pgcrypto;
 
+CREATE TYPE es_data_type AS ENUM ('text', 'keyword', 'date', 'boolean', 'integer', 'geo_point', 'null');
+
+CREATE TYPE entry_data_type AS ENUM ('meta', 'text');
+
 CREATE TABLE project (
 	id SERIAL PRIMARY KEY,
 	slug TEXT NOT NULL UNIQUE,
@@ -25,7 +29,10 @@ CREATE TABLE metadata (
 	slug TEXT NOT NULL,
 	title TEXT NOT NULL,
 	sortorder SMALLINT NOT NULL,
-	created TIMESTAMP WITH TIME ZONE,
+	aside BOOLEAN NOT NULL DEFAULT true,
+	es_data_type es_data_type NOT NULL DEFAULT 'keyword',
+	type entry_data_type NOT NULL DEFAULT 'meta',
+	created TIMESTAMP WITH TIME ZONE NOT NULL,
 	updated TIMESTAMP WITH TIME ZONE
 );
 

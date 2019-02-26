@@ -7,9 +7,10 @@ pg.types.setTypeParser(20, function (value) {
 pg.types.setTypeParser(1184, function (value) {
     return value;
 });
+console.log('PGPASS', process.env.PGPASS);
 exports.default = () => new pg.Pool({
     database: 'docere',
-    host: process.env.PGHOST,
+    host: process.env.PGHOST || 'localhost',
     password: process.env.PGPASS || 'postgis',
     user: 'postgres'
 });

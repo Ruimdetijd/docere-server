@@ -22,7 +22,7 @@ async function extractData(files, metadata_extractor, extractors, slug) {
         else
             console.log('From page: ', msg);
     });
-    await page.goto('http://localhost:4000');
+    await page.goto('http://localhost:80');
     await page.addScriptTag({ path: './node_modules/xmlio/dist/bundle.js' });
     const output = await page.evaluate(async function (xmlFiles, metadata_extractor, extractorsJson, slug) {
         function fetchXml(url) {

@@ -1,0 +1,7 @@
+{
+	"name": "docereserver",
+	"script": "build/index.js",
+	"env_production": {
+		"PGPASS": "qtPvdMbcFIWRC28C"
+	}
+}

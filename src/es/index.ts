@@ -24,7 +24,7 @@ async function extractData(files: string[], metadata_extractor: string, extracto
 		if (msg.slice(0, 7) === 'WARNING') logWarning(msg.slice(7))
 		else console.log('From page: ', msg)
 	})
-	await page.goto('http://localhost:4000')
+	await page.goto('http://localhost:80')
 	await page.addScriptTag({ path: './node_modules/xmlio/dist/bundle.js' })
 
 	const output: DocData[] = await page.evaluate(
