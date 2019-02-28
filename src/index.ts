@@ -63,7 +63,6 @@ async function init() {
 		}
 	}
 }
-
 init()
 
 const PORT = 3377

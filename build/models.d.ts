@@ -13,14 +13,15 @@ export interface Extractor {
 }
 export declare class Project {
     description: string;
+    extractors: Extractor[];
+    facsimile_extractor: string;
     files: string[];
     id: string;
+    metadata_extractor: string;
     slug: string;
+    splitter: string;
     title: string;
     userIds: string[];
-    metadata_extractor: string;
-    facsimile_extractor: string;
-    extractors: Extractor[];
     xmlIds: string[];
 }
 export declare class User {
