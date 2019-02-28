@@ -1,7 +1,14 @@
 import { Extractor } from '../models';
-export declare type DocData = [{
-    [key: string]: string;
-}, {
-    [key: string]: string[];
-}, string];
-export default function main(slug: string, metadata_extractor: string, extractors: Extractor[]): Promise<void>;
+export declare type Entry = {
+    fileName: string;
+    metadata: {
+        [key: string]: string;
+    };
+    textdata: {
+        [key: string]: string[];
+    };
+    text: string;
+    xml: string;
+    xmlDoc: XMLDocument;
+};
+export default function main(slug: string, splitter: string, metadata_extractor: string, facsimile_extractor: string, extractors: Extractor[]): Promise<void>;

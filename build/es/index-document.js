@@ -36,14 +36,13 @@ async function createIndex(slug, metadata) {
     }
 }
 exports.createIndex = createIndex;
-async function indexDocument(slug, docData) {
-    const [metadata, textData, text] = docData;
+async function indexDocument(slug, entry) {
     try {
         await client.index({
-            id: metadata.id,
+            id: entry.metadata.id,
             index: slug,
             type: 'doc',
-            body: Object.assign({}, metadata, textData, { text })
+            body: Object.assign({}, entry.metadata, entry.textdata, { text: entry.text })
         });
     }
     catch (err) {

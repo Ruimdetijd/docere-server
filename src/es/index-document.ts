@@ -1,5 +1,5 @@
 import * as es from 'elasticsearch'
-import { DocData } from './index'
+import { Entry } from './index'
 
 const client = new es.Client({
 	host: 'localhost:9200'
@@ -37,14 +37,13 @@ export async function createIndex(slug: string, metadata: any[]) {
 	}
 }
 
-export default async function indexDocument(slug: string, docData: DocData) {
-	const [metadata, textData, text] = docData
+export default async function indexDocument(slug: string, entry: Entry) {
 	try {
 		await client.index({
-			id: metadata.id,
+			id: entry.metadata.id,
 			index: slug,
 			type: 'doc',
-			body: { ...metadata, ...textData, text }
+			body: { ...entry.metadata, ...entry.textdata, text: entry.text }
 		})
 	} catch (err) {
 		console.log('indexDocument', err)
