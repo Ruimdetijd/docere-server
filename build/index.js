@@ -8,6 +8,7 @@ const update_metadata_1 = require("./db/update-metadata");
 const update_metadata_sortorder_1 = require("./db/update-metadata-sortorder");
 const insert_user_1 = require("./db/insert-user");
 const utils_1 = require("./db/utils");
+const es_1 = require("./es");
 const app = express();
 app.disable('x-powered-by');
 app.use(express.json());
@@ -45,12 +46,14 @@ app.post('/users', async (req, res) => {
     res.json(user);
 });
 async function init() {
-    const sql = `SELECT count(*) FROM project`;
+    const sql = `SELECT slug FROM project`;
     const result = await utils_1.execSql(sql);
-    if (result.rows[0].count === 0) {
-        const slugs = fs.readdirSync(`public/xml`);
-        for (const slug of slugs) {
+    const slugs = fs.readdirSync(`public/xml-source`);
+    const projectSlugs = result.rows.map(r => r.slug);
+    for (const slug of slugs) {
+        if (projectSlugs.indexOf(slug) === -1) {
             await insert_project_1.default({ slug });
+            await es_1.default(slug);
         }
     }
 }

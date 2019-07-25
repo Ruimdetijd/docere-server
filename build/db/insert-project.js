@@ -5,7 +5,7 @@ const chalk_1 = require("chalk");
 const utils_1 = require("./utils");
 exports.default = async (project) => {
     project = Object.assign({ description: '', files: [] }, project);
-    project.files = fs.readdirSync(`public/xml/${project.slug}`)
+    project.files = fs.readdirSync(`public/xml-source/${project.slug}`)
         .filter(file => (/\.xml$/usg).test(file))
         .map(file => file.slice(0, -4));
     const sql = `INSERT INTO project

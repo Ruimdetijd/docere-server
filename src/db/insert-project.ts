@@ -11,7 +11,7 @@ export default async (project: Partial<Project>): Promise<Project> => {
 		...project
 	}
 
-	project.files = fs.readdirSync(`public/xml/${project.slug}`)
+	project.files = fs.readdirSync(`public/xml-source/${project.slug}`)
 		.filter(file => (/\.xml$/usg).test(file))
 		.map(file => file.slice(0, -4))
 

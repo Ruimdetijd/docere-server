@@ -7,6 +7,7 @@ import updateMetadataSortorder from './db/update-metadata-sortorder'
 import insertUser from './db/insert-user'
 import { execSql, selectOne, selectByProp } from './db/utils'
 import { Project } from './models'
+import updateIndex from './es'
 
 const app = express()
 app.disable('x-powered-by')
@@ -53,13 +54,14 @@ app.post('/users', async (req, res) => {
 })
 
 async function init() {
-	const sql = `SELECT count(*) FROM project`
+	const sql = `SELECT slug FROM project`
 	const result = await execSql(sql)
-	if (result.rows[0].count === 0) {
-
-		const slugs = fs.readdirSync(`public/xml`) as string[]
-		for (const slug of slugs) {
+	const slugs = fs.readdirSync(`public/xml-source`) as string[]
+	const projectSlugs = result.rows.map(r => r.slug)
+	for (const slug of slugs) {
+		if (projectSlugs.indexOf(slug) === -1) {
 			await insertProject({ slug })
+			await updateIndex(slug)
 		}
 	}
 }

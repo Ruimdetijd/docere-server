@@ -100,7 +100,6 @@ async function extractData(
 				// @ts-ignore, XMLio is not defined in this document, but it is on Puppeteer's page
 				const xmlio = await new XMLio(entry.xmlDoc)
 
-
 				if (metadata_extractor != null) {
 					const extractMetadata = new Function(`return ${metadata_extractor}`)
 					const meta = extractMetadata()(xmlio, entry.fileName)
@@ -126,8 +125,8 @@ async function extractData(
 				// 	entry.metadata.__facsimiles = facsimiles.facsimiles.map((f: any) => f.path)
 				// }
 
-				const extractors: Extractor[] = JSON.parse(extractorsJson)
-				if (extractors != null) {
+				const extractors: Extractor[] = extractorsJson != null ? JSON.parse(extractorsJson) : []
+				if (extractors.length) {
 					for (const extractor of extractors) {
 						let nodes = xmlio
 							.select(extractor.selector)
@@ -171,10 +170,10 @@ async function extractData(
 
 export default async function main(
 	slug: string,
-	splitter: string,
-	metadata_extractor: string,
-	facsimile_extractor: string,
-	extractors: Extractor[]
+	splitter?: string,
+	metadata_extractor?: string,
+	facsimile_extractor?: string,
+	extractors?: Extractor[]
 ) {
 	const files = fs.readdirSync(`./public/xml-source/${slug}`)
 	let entries: Entry[]

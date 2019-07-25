@@ -3,12 +3,12 @@
 # Dev
 Start the DBs (PostgreSQL, ElasticSearch)
 ```
-$ npm run start:backend
+$ npm run backend
 ```
 
 Will run the server with `nodemon`
 ```
-$ npm run start:dev
+$ npm run dev
 ```
 
 Will watch file changes

@@ -11,4 +11,4 @@ export declare type Entry = {
     xml: string;
     xmlDoc: XMLDocument;
 };
-export default function main(slug: string, splitter: string, metadata_extractor: string, facsimile_extractor: string, extractors: Extractor[]): Promise<void>;
+export default function main(slug: string, splitter?: string, metadata_extractor?: string, facsimile_extractor?: string, extractors?: Extractor[]): Promise<void>;

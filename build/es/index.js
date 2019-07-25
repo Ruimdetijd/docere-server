@@ -91,8 +91,8 @@ async function extractData(files, splitter, metadata_extractor, facsimile_extrac
             entry.metadata.__filebasename = entry.fileName;
             if (!entry.metadata.hasOwnProperty('id'))
                 entry.metadata.id = entry.fileName;
-            const extractors = JSON.parse(extractorsJson);
-            if (extractors != null) {
+            const extractors = extractorsJson != null ? JSON.parse(extractorsJson) : [];
+            if (extractors.length) {
                 for (const extractor of extractors) {
                     let nodes = xmlio
                         .select(extractor.selector)

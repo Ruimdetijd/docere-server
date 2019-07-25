@@ -9,8 +9,8 @@
     "build": "rm -rf build && tsc",
     "release": "./release.sh",
     "start": "npm run build && node build/index.js",
-    "start:backend": "./start-dev.sh",
-    "start:dev": "npm run build && ./node_modules/.bin/nodemon --watch build build/index.js",
+    "backend": "./start-dev.sh",
+    "dev": "npm run build && ./node_modules/.bin/nodemon --watch build build/index.js",
     "watch": "tsc -w"
   },
   "author": "Gijsjan Brouwer",
